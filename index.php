@@ -29,23 +29,44 @@
 			<?php endforeach ?>
 
 
+
+
 				<form action="index.php" class="post-form">
 					
 					<h1 class="text-center">Add Blog Post</h1>
 
 					<div class="form-group">
-					<label for="title">Title</label>
+						<label for="title">Title</label>
 						<input type="text" name="title" class="form-control" >
 					</div>
 
-					<div class="form-group">
+					<div class="form-group" style="position: relative;">
 						<label for="post">Body</label>
+						
+						<!-- Upload image button -->
+						<a href="#" class="btn btn-xs btn-default pull-right upload-img-btn" data-toggle="modal" data-target="#myModal">upload image</a>
+
 						<textarea name="body" id="body" class="form-control" cols="30" rows="5"></textarea>
 	 				</div>
 	 				<div class="form-group">
 	 					<button type="submit" class="btn btn-success pull-right">Save Post</button>
 	 				</div>
 				</form>
+
+				<!-- Image uri display Modal -->
+				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				        <h4 class="modal-title" id="myModalLabel">Click below to copy image url</h4>
+				      </div>
+				      <div class="modal-body">
+				        <p class="lead">http://www.testthis.com/images/first.png</p>
+				      </div>
+				    </div>
+				  </div>
+				</div>
 
 				
 			</div>

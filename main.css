@@ -24,3 +24,10 @@ p {
 	margin: 20px auto;
 	font-size: 1.2em;
 }
+
+.upload-img-btn {
+	position: absolute; 
+	z-index: 9; 
+	top: 35px;
+	right: 5px;
+}
