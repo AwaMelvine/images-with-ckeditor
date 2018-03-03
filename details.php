@@ -15,7 +15,7 @@
 	
 	<div class="container">
 		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
+			<div class="col-md-8 col-md-offset-2">
 				<div class="post-details">
 					<h3><a href="#">This is the very first post here</a></h3>
 					<p>Here goes some sample text that describes the situation hereHere goes some sample text that describes the situation hereHere goes some sample text that describes the situation here</p>
