@@ -1,3 +1,5 @@
+<?php include('server.php') ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,14 +19,14 @@
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2 post-div">
 
+			<?php foreach ($posts as $post): ?>
 				<div class="post">
-					<h3><a href="details.php">This is the very first post here</a></h3>
-					<p>Here goes some sample text that describes the situation here</p>
+					<h3>
+						<a href="details.php?id=<?php echo $post['id'] ?>"><?php echo $post['title']; ?></a>
+					</h3>
+					<p><?php echo $post['body'] ?></p>
 				</div>				
-				<div class="post">
-					<h3><a href="details.php">This is the very first post here</a></h3>
-					<p>Here goes some sample text that describes the situation here</p>
-				</div>	
+			<?php endforeach ?>
 
 
 				<form action="index.php" class="post-form">

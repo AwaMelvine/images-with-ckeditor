@@ -1,3 +1,13 @@
+<?php 
+	include('db.php');
+
+	if (isset($_GET['id'])) {
+		$id = $_GET['id'];
+		$result = mysqli_query($db, "SELECT * FROM posts WHERE id=$id");
+
+		$post = mysqli_fetch_assoc($result);
+	}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,8 +27,8 @@
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2">
 				<div class="post-details">
-					<h3><a href="#">This is the very first post here</a></h3>
-					<p>Here goes some sample text that describes the situation hereHere goes some sample text that describes the situation hereHere goes some sample text that describes the situation here</p>
+					<h2><?php echo $post['title'] ?></h2>
+					<p><?php echo $post['body']; ?></p>
 				</div>				
 			</div>
 
