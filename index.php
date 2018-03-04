@@ -31,7 +31,7 @@
 
 
 
-				<form action="index.php" class="post-form">
+				<form action="index.php" method="post" class="post-form">
 					
 					<h1 class="text-center">Add Blog Post</h1>
 
@@ -46,10 +46,14 @@
 						<!-- Upload image button -->
 						<a href="#" class="btn btn-xs btn-default pull-right upload-img-btn" data-toggle="modal" data-target="#myModal">upload image</a>
 
+
+						<input type="file" id="browse-images" style="display: none;">
+
+
 						<textarea name="body" id="body" class="form-control" cols="30" rows="5"></textarea>
 	 				</div>
 	 				<div class="form-group">
-	 					<button type="submit" class="btn btn-success pull-right">Save Post</button>
+	 					<button type="submit" name="save-post" class="btn btn-success pull-right">Save Post</button>
 	 				</div>
 				</form>
 
@@ -88,7 +92,35 @@
 
 <!-- JQuery scripts -->
 <script>
-CKEDITOR.replace('body');
+	// initialize ckeditor
+	CKEDITOR.replace('body');
+
+	$(document).ready(function(){
+		// When user clicks the 'upload image' button
+		$('.upload-img-btn').on('click', function(){
+			
+			// Add click event on the image upload input
+			// field when button is clicked
+			$('#browse-images').click();
+
+
+			$(document).on('change', '#browse-images', function(e){
+
+				// Get the selected image and all its properties
+				var image_file = document.getElementById('browse-images').files[0];
+
+				// Initialize the image name
+				var image_name = image_file.name;
+
+				alert(image_name);
+				return;
+
+
+			});
+
+		});
+	});
+
 </script>
 
 </body>
