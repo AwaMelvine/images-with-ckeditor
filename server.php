@@ -6,21 +6,19 @@
 	$result = mysqli_query($db, "SELECT * FROM posts");
 	$posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-	if (isset($_POST['upload-image'])) {
+	if (isset($_POST['uploading_file'])) {
 		// Get image name
-	  	$image = $_FILES['image']['post_image'];
+	  	$image = $_FILES['post_image']['name'];
 
 	  	// image file directory
-	  	$target = "images/".basename($image);
+	  	$target = "images/" . basename($image);
 
-	  	// $sql = "INSERT INTO images (image, image_text) VALUES ('$image', '$image_text')";
-	  	// // execute query
-	  	// mysqli_query($db, $sql);
-
-	  	if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
-	  		$msg = "Image uploaded successfully";
+	  	if (move_uploaded_file($_FILES['post_image']['tmp_name'], $target)) {
+	  		echo "http://localhost/CWA/ckeditor-images/" . $target;
+	  		exit();
 	  	}else{
-	  		$msg = "Failed to upload image";
+	  		echo "Failed to upload image";
+	  		exit();
 	  	}
 	}
 

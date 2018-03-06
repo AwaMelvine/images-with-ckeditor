@@ -15,10 +15,11 @@
 </head>
 <body>
 	
-	<div class="container">
-		<div class="row">
-			<div class="col-md-8 col-md-offset-2 post-div">
+<div class="container">
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2 post-div">
 
+			<!-- Display a list of posts from database -->
 			<?php foreach ($posts as $post): ?>
 				<div class="post">
 					<h3>
@@ -31,52 +32,54 @@
 
 
 
-				<form action="index.php" method="post" class="post-form">
-					
-					<h1 class="text-center">Add Blog Post</h1>
+			<form action="index.php" method="post" enctype="multipart/form-data" class="post-form">
+				
+				<h1 class="text-center">Add Blog Post</h1>
 
-					<div class="form-group">
-						<label for="title">Title</label>
-						<input type="text" name="title" class="form-control" >
-					</div>
-
-					<div class="form-group" style="position: relative;">
-						<label for="post">Body</label>
-						
-						<!-- Upload image button -->
-						<a href="#" class="btn btn-xs btn-default pull-right upload-img-btn" data-toggle="modal" data-target="#myModal">upload image</a>
-
-
-						<input type="file" id="browse-images" style="display: none;">
-
-
-						<textarea name="body" id="body" class="form-control" cols="30" rows="5"></textarea>
-	 				</div>
-	 				<div class="form-group">
-	 					<button type="submit" name="save-post" class="btn btn-success pull-right">Save Post</button>
-	 				</div>
-				</form>
-
-				<!-- Image uri display Modal -->
-				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-				  <div class="modal-dialog" role="document">
-				    <div class="modal-content">
-				      <div class="modal-header">
-				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				        <h4 class="modal-title" id="myModalLabel">Click below to copy image url</h4>
-				      </div>
-				      <div class="modal-body">
-				        <p class="lead">http://www.testthis.com/images/first.png</p>
-				      </div>
-				    </div>
-				  </div>
+				<div class="form-group">
+					<label for="title">Title</label>
+					<input type="text" name="title" class="form-control" >
 				</div>
 
-				
+				<div class="form-group" style="position: relative;">
+					<label for="post">Body</label>
+					
+					<!-- Upload image button -->
+					<a href="#" class="btn btn-xs btn-default pull-right upload-img-btn" data-toggle="modal" data-target="#myModal">upload image</a>
+
+
+					<!-- Input to browse your machine and select image to upload -->
+					<input type="file" id="browse-image" style="display: none;">
+
+					<textarea name="body" id="body" class="form-control" cols="30" rows="5"></textarea>
+
+					</div>
+					<div class="form-group">
+						<button type="submit" name="save-post" class="btn btn-success pull-right">Save Post</button>
+					</div>
+			</form>
+
+			<!-- Image uri display Modal -->
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title" id="myModalLabel">Click below to copy image url</h4>
+			      </div>
+			      <div class="modal-body">
+					<!-- returned image url will be displayed here -->
+					<p class="lead" id="post_image_url"></p>
+			      </div>
+			    </div>
+			  </div>
 			</div>
 
+			
 		</div>
+
 	</div>
+</div>
 
 
 
@@ -101,19 +104,60 @@
 			
 			// Add click event on the image upload input
 			// field when button is clicked
-			$('#browse-images').click();
+			$('#browse-image').click();
 
 
-			$(document).on('change', '#browse-images', function(e){
+			$(document).on('change', '#browse-image', function(e){
 
 				// Get the selected image and all its properties
-				var image_file = document.getElementById('browse-images').files[0];
+				var image_file = document.getElementById('browse-image').files[0];
 
 				// Initialize the image name
 				var image_name = image_file.name;
 
-				alert(image_name);
-				return;
+				
+				// determine the image extension and validate image
+				var image_extension = image_name.split('.').pop().toLowerCase();
+				if (jQuery.inArray(image_extension, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
+					alert('That image type is not supported');
+					return;
+				} 
+
+				// Get the image size. Validate size
+				var image_size = image_file.size;
+				if (image_size > 3000000) {
+					alert('The image size is too big');
+					return;
+				} 
+
+
+				// Compile form values from the form to send to the server
+				// In this case, we are taking the image file which 
+				// has key 'post_image' and value 'image_file'
+				var form_data = new FormData();
+				form_data.append('post_image', image_file);
+				form_data.append('uploading_file', 1);
+
+				// upload image to the server in an ajax call (without reloading the page)
+				$.ajax({
+					url: 'index.php',
+					method: 'POST',
+					data: form_data,
+					contentType: false,
+					cache: false,
+					processData: false,
+					beforeSend : function(){
+
+					},
+					success : function(data){
+						// how the pop up modal
+						$('#myModal').modal('show');
+
+						// the server returns a URL of the uploaded image
+						// show the URL on the popup modal
+						$('#post_image_url').text(data);
+					}
+				});
 
 
 			});
