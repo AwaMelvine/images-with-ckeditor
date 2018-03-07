@@ -29,6 +29,7 @@
 
 		$sql = "INSERT INTO posts (title, body) VALUES ('$title', '$body')";
 		mysqli_query($db, $sql);
+		header("location: index.php");
 	}
 
 ?>

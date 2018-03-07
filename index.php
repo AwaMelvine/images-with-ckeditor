@@ -25,7 +25,10 @@
 					<h3>
 						<a href="details.php?id=<?php echo $post['id'] ?>"><?php echo $post['title']; ?></a>
 					</h3>
-					<p><?php echo $post['body'] ?></p>
+					<p>
+						<?php echo html_entity_decode(preg_replace('/\s+?(\S+)?$/', '', substr($post["body"], 0, 200))); ?>
+						
+					</p>
 				</div>				
 			<?php endforeach ?>
 
@@ -49,7 +52,7 @@
 
 
 					<!-- Input to browse your machine and select image to upload -->
-					<input type="file" id="browse-image" style="display: none;">
+					<input type="file" id="image-input" style="display: none;">
 
 					<textarea name="body" id="body" class="form-control" cols="30" rows="5"></textarea>
 
@@ -69,7 +72,12 @@
 			      </div>
 			      <div class="modal-body">
 					<!-- returned image url will be displayed here -->
-					<p class="lead" id="post_image_url"></p>
+					<input 
+						type="text" 
+						id="post_image_url" 
+						onclick="return copyUrl()" 
+						class="form-control"
+						>
 			      </div>
 			    </div>
 			  </div>
@@ -98,19 +106,34 @@
 	// initialize ckeditor
 	CKEDITOR.replace('body');
 
+	// Javascript function to copy image url to clipboard from modal
+	function copyUrl() {
+	  var copyText = document.getElementById("post_image_url");
+	  copyText.select();
+	  document.execCommand("Copy");
+
+	  // replace url with confirm message 
+	  $('#post_image_url').replaceWith('<p style="color: green"><b>Image url copied to clipboard</b></p>');
+
+	  // hide modal after 2 seconds
+	  setTimeout(function(){
+		  $('#myModal').modal('hide');
+	  }, 2000);
+	}
+
 	$(document).ready(function(){
 		// When user clicks the 'upload image' button
 		$('.upload-img-btn').on('click', function(){
 			
 			// Add click event on the image upload input
 			// field when button is clicked
-			$('#browse-image').click();
+			$('#image-input').click();
 
 
-			$(document).on('change', '#browse-image', function(e){
+			$(document).on('change', '#image-input', function(e){
 
 				// Get the selected image and all its properties
-				var image_file = document.getElementById('browse-image').files[0];
+				var image_file = document.getElementById('image-input').files[0];
 
 				// Initialize the image name
 				var image_name = image_file.name;
@@ -155,7 +178,7 @@
 
 						// the server returns a URL of the uploaded image
 						// show the URL on the popup modal
-						$('#post_image_url').text(data);
+						$('#post_image_url').val(data);
 					}
 				});
 

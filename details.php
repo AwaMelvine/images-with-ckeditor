@@ -25,10 +25,10 @@
 	
 	<div class="container">
 		<div class="row">
-			<div class="col-md-8 col-md-offset-2">
+			<div class="col-md-8 col-md-offset-2 post-div">
 				<div class="post-details">
 					<h2><?php echo $post['title'] ?></h2>
-					<p><?php echo $post['body']; ?></p>
+					<p><?php echo html_entity_decode($post['body']); ?></p>
 				</div>				
 			</div>
 
